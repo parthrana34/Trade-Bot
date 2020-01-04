@@ -19,7 +19,7 @@ k=2
 #profit in index
 p=0.5
 
-data = pd.read_excel("U:\\MyStuff\\gap\\i.xlsx", sheet_name="data_future")
+data = pd.read_excel("data.xlsx", sheet_name="data_future")
 
 data['slope_10yt'] = float('nan')
 data['slope_rate'] = float('nan')
@@ -29,7 +29,7 @@ data['slope_rate_tendency'] = float('nan')
 for i in range(n,data.shape[0]+1):
     print(i)
     temp = data[i-n:i]
-    data.iloc[i-1,10] = linregress(temp['x'],temp['10yt']).slope
+    data.iloc[i-1,10] = linregress(temp['x'],temp['10yt_future']).slope
     data.iloc[i-1,11] = linregress(temp['x'],temp['rate']).slope
     
     if i>m+n:
@@ -63,14 +63,14 @@ for i in range(0,data.shape[0]):
     
     if data.iloc[i,18] == 'long':
             
-        temp2 = data[(data['10yt'] > data.iloc[i,2] + p ) & (data['date'] > data.iloc[i,0])]
+        temp2 = data[(data['10yt_future'] > data.iloc[i,2] + p ) & (data['date'] > data.iloc[i,0])]
         if temp2.shape[0] > 0:
             data.iloc[i,19] = temp2.iloc[0,2]
             data.iloc[i,20] = temp2.iloc[0,0] - data.iloc[i,0]
     
     elif data.iloc[i,18] == 'short':
         
-        temp2 = data[(data['10yt'] < data.iloc[i,2] - p ) & (data['date'] > data.iloc[i,0])]
+        temp2 = data[(data['10yt_future'] < data.iloc[i,2] - p ) & (data['date'] > data.iloc[i,0])]
         if temp2.shape[0] > 0:
             data.iloc[i,19] = temp2.iloc[0,2]
             data.iloc[i,20] = temp2.iloc[0,0] - data.iloc[i,0]
